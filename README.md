@@ -119,6 +119,94 @@ Optional arguments:
 
 We provide a simple demo of LipNet. You can run `python demo.py PATH_TO_YOUR_MP4` to watch. :)
 
+## New Features: MP4 & Camera Support (Cloud Server Version)
+
+We have enhanced LipNet with the following new capabilities for cloud server deployment:
+
+### Features
+- **MP4 Video Processing**: Process pre-recorded MP4 video files with results overlaid on video
+- **Camera Recording**: Record from webcam with real-time lip-reading overlay
+- **GPU/CPU Selection**: Flexible device selection with automatic fallback
+- **No GUI Required**: Designed for cloud servers, all results saved to video files
+- **JSON Results**: Automatic saving of recognition results in JSON format
+
+### Quick Start
+
+1. **Install dependencies**:
+```bash
+pip install -r requirements.txt
+```
+
+2. **Download required files**:
+   - Dlib predictor: [shape_predictor_68_face_landmarks.dat](http://dlib.net/files/shape_predictor_68_face_landmarks.dat.bz2)
+   - Pre-trained models are already available in the `pretrain/` directory.
+
+3. **Run the application**:
+
+**Process MP4 file (GPU)**:
+```bash
+python run_lipnet.py --mode mp4 --video your_video.mp4
+```
+
+**Process MP4 file with custom output**:
+```bash
+python run_lipnet.py --mode mp4 --video your_video.mp4 --output result.mp4
+```
+
+**Process MP4 file (CPU)**:
+```bash
+python run_lipnet.py --mode mp4 --video your_video.mp4 --device cpu
+```
+
+**Record from camera for 30 seconds**:
+```bash
+python run_lipnet.py --mode camera --duration 30
+```
+
+**Record from camera with custom output**:
+```bash
+python run_lipnet.py --mode camera --duration 60 --output camera.mp4
+```
+
+**List available GPUs**:
+```bash
+python run_lipnet.py --list-gpus
+```
+
+### Command Line Options
+
+| Option | Description | Default |
+|--------|-------------|---------|
+| `--mode` | Run mode: `mp4` or `camera` | `mp4` |
+| `--video` | MP4 video file path (required for mp4 mode) | - |
+| `--output` | Output video file path | auto-generated |
+| `--device` | Compute device: `gpu` or `cpu` | `gpu` |
+| `--gpu-id` | GPU device ID | `0` |
+| `--model` | Model weights path | `pretrain/LipNet_unseen_...` |
+| `--num-frames` | Frames per inference | `75` |
+| `--camera-id` | Camera device ID | `0` |
+| `--duration` | Recording duration in seconds (camera mode) | `30` |
+
+### Output Files
+
+The system generates two output files:
+1. **Video file**: Original video with recognition results overlaid (text + confidence)
+2. **JSON file**: Detailed recognition results with timestamps
+
+### Architecture
+
+The enhanced system consists of the following modules:
+
+- **device_manager.py**: GPU/CPU device management
+- **video_processor.py**: Video capture and lip detection
+- **model_wrapper.py**: Model loading and inference
+- **lipnet_app.py**: Main application service (cloud server version)
+- **run_lipnet.py**: Command-line interface
+
+- **model_wrapper.py**: Model loading and inference
+- **lipnet_app.py**: Main application service
+- **run_lipnet.py**: Command-line interface
+
 ## Dependencies
 
 * PyTorch 1.0+
