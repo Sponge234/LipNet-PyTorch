@@ -207,6 +207,68 @@ The enhanced system consists of the following modules:
 - **lipnet_app.py**: Main application service
 - **run_lipnet.py**: Command-line interface
 
+## New Feature: Real-time Camera Lip-reading GUI
+
+We have added a real-time camera lip-reading feature that opens the camera, detects lip movements in real-time, and displays the recognition results on screen.
+
+### Features
+- **Real-time Camera Preview**: Live video feed from webcam
+- **Lip Region Detection**: Automatic detection and marking of lip region
+- **Real-time Recognition**: Continuous lip-reading with sliding window
+- **Result Overlay**: Recognition text and confidence displayed on video
+- **FPS Display**: Real-time frame rate monitoring
+- **Pause/Resume**: Space bar to pause/resume detection
+- **GPU/CPU Support**: Flexible device selection
+
+### Quick Start
+
+**Run with GPU (default)**:
+```bash
+python run_realtime.py
+```
+
+**Run with CPU**:
+```bash
+python run_realtime.py --device cpu
+```
+
+**Use specific camera**:
+```bash
+python run_realtime.py --camera-id 1
+```
+
+**List available GPUs**:
+```bash
+python run_realtime.py --list-gpus
+```
+
+### Command Line Options
+
+| Option | Description | Default |
+|--------|-------------|---------|
+| `--camera-id` | Camera device ID | `0` |
+| `--device` | Compute device: `gpu` or `cpu` | `gpu` |
+| `--gpu-id` | GPU device ID | `0` |
+| `--model` | Model weights path | `pretrain/LipNet_unseen_...` |
+| `--predictor` | Dlib predictor path | `shape_predictor_68_face_landmarks.dat` |
+| `--num-frames` | Frames per inference | `75` |
+| `--list-gpus` | List available GPUs | - |
+
+### Keyboard Controls
+
+- **Space**: Pause/Resume detection
+- **ESC** or **q**: Exit program
+
+### Architecture
+
+The real-time system consists of the following modules:
+
+- **camera_capture.py**: Camera capture and resource management
+- **fps_counter.py**: Real-time FPS calculation
+- **detection_controller.py**: Detection flow and frame buffer management
+- **realtime_gui.py**: Main GUI application
+- **run_realtime.py**: Command-line entry point
+
 ## Dependencies
 
 * PyTorch 1.0+
